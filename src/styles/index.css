@@ -92,8 +92,7 @@ h6 {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10;
-  /* backdrop-filter: blur(10px); Enable if background is transparent */
+  z-index: 100; /* Higher z-index for overlay */
 }
 
 .logo {
@@ -101,6 +100,7 @@ h6 {
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text-primary);
+  z-index: 102; /* Above overlay */
 }
 
 .nav-links {
@@ -129,11 +129,51 @@ h6 {
   font-weight: 600;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: inline-block;
+  text-align: center;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-btn {
+  display: none;
+  z-index: 102; /* Above overlay */
+  color: var(--text-primary);
+}
+
+/* Mobile Navbar Styles */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(5, 5, 5, 0.98);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 101;
+  }
+
+  .nav-links.active {
+    transform: translateY(0);
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 }
 
 /* Footer */
