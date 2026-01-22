@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Instagram, Twitter, Youtube, Link as LinkIcon, ArrowRight } from 'lucide-react';
+import { Mail, Instagram, Twitter, Youtube, ArrowRight, Video, ShoppingBag, Layout, Heart, MessageCircle } from 'lucide-react';
 
 const CreatorDemo = () => {
+    const [activeTab, setActiveTab] = useState('home'); // home, content, shop
     const [email, setEmail] = useState('');
     const [subscribed, setSubscribed] = useState(false);
 
@@ -10,6 +11,64 @@ const CreatorDemo = () => {
         if(email) setSubscribed(true);
     };
 
+    const renderHeader = () => (
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div style={{ 
+                width: '96px', 
+                height: '96px', 
+                borderRadius: '50%', 
+                background: 'url("https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                margin: '0 auto 1rem',
+                border: '4px solid #fff',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
+            }}></div>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.5rem', color: '#111' }}>Sarah Jenkins</h1>
+            <p style={{ color: '#666', maxWidth: '400px', margin: '0 auto', fontSize: '1rem', lineHeight: '1.5' }}>
+                Digital Artist & Design Educator. <br/>
+                Teaching 100k+ creatives how to build a career they love.
+            </p>
+            
+            {/* Social Pill */}
+            <div style={{ display: 'inline-flex', gap: '1rem', marginTop: '1.5rem', background: '#f5f5f5', padding: '0.5rem 1.5rem', borderRadius: '2rem' }}>
+                <Instagram size={20} className="hover-scale" style={{ cursor: 'pointer', color: '#E1306C' }} />
+                <Twitter size={20} className="hover-scale" style={{ cursor: 'pointer', color: '#1DA1F2' }} />
+                <Youtube size={20} className="hover-scale" style={{ cursor: 'pointer', color: '#FF0000' }} />
+            </div>
+        </div>
+    );
+
+    const renderTabs = () => (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem', borderBottom: '1px solid #eee', paddingBottom: '1rem' }}>
+            {[
+                { id: 'home', label: 'Home', icon: <Layout size={18} /> },
+                { id: 'content', label: 'Content', icon: <Video size={18} /> },
+                { id: 'shop', label: 'Shop', icon: <ShoppingBag size={18} /> }
+            ].map(tab => (
+                <div 
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.5rem',
+                        cursor: 'pointer',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '8px',
+                        background: activeTab === tab.id ? '#111' : 'transparent',
+                        color: activeTab === tab.id ? '#fff' : '#666',
+                        fontWeight: '600',
+                        fontSize: '0.9rem',
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    {tab.icon} {tab.label}
+                </div>
+            ))}
+        </div>
+    );
+
     return (
         <div style={{ 
             height: '100%', 
@@ -17,93 +76,112 @@ const CreatorDemo = () => {
             color: '#000', 
             display: 'flex', 
             flexDirection: 'column', 
-            alignItems: 'center', 
-            padding: '2rem 1rem',
             overflowY: 'auto'
         }}>
-            {/* Avatar */}
-            <div style={{ 
-                width: '80px', 
-                height: '80px', 
-                borderRadius: '50%', 
-                background: 'linear-gradient(45deg, #ff00cc, #333399)',
-                marginBottom: '1rem',
-                border: '4px solid #fff',
-                boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
-            }}></div>
-
-            <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>Sarah Creates</h1>
-            <p style={{ color: '#666', textAlign: 'center', maxWidth: '400px', marginBottom: '2rem', fontSize: '0.95rem' }}>
-                Digital artist & storyteller. Teaching you how to build a creative career.
-            </p>
-
-            {/* Links */}
-            <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '3rem' }}>
-                {['My Design Course', 'Download Free Brushes', 'Book a Consultation', 'Latest YouTube Video'].map((link, i) => (
-                    <div key={i} style={{ 
-                        padding: '1rem', 
-                        background: '#f8f8f8', 
-                        borderRadius: '12px', 
-                        textAlign: 'center',
-                        fontWeight: '600',
-                        fontSize: '0.9rem',
-                        cursor: 'pointer',
-                        transition: 'transform 0.2s',
-                        border: '1px solid #eee'
-                    }}
-                    onMouseEnter={e => { e.currentTarget.style.background = '#f0f0f0'; e.currentTarget.style.transform = 'scale(1.02)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = '#f8f8f8'; e.currentTarget.style.transform = 'scale(1)'; }}
-                    >
-                        {link}
-                    </div>
-                ))}
-            </div>
-
-            {/* Newsletter */}
-            <div style={{ width: '100%', maxWidth: '400px', background: '#000', padding: '1.5rem', borderRadius: '16px', color: '#fff', textAlign: 'center' }}>
-                <div style={{ marginBottom: '1rem', fontWeight: 'bold' }}>Join 15k+ Creators</div>
-                {!subscribed ? (
-                    <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem' }}>
-                        <input 
-                            type="email" 
-                            placeholder="Your email" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            style={{ 
-                                flex: 1, 
-                                padding: '0.8rem', 
-                                borderRadius: '8px', 
-                                border: 'none', 
-                                outline: 'none',
-                                background: 'rgba(255,255,255,0.15)',
-                                color: '#fff'
-                            }} 
-                        />
-                        <button type="submit" style={{ 
-                            background: '#fff', 
-                            color: '#000', 
-                            border: 'none', 
-                            borderRadius: '8px', 
-                            width: '40px', 
-                            cursor: 'pointer',
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center'
-                        }}>
-                            <ArrowRight size={18} />
-                        </button>
-                    </form>
-                ) : (
-                    <div style={{ color: '#4ade80', fontWeight: 'bold', padding: '0.5rem' }}>You're in! Check your inbox.</div>
-                )}
-            </div>
+            {/* Cover Banner */}
+            <div style={{ height: '140px', background: 'linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%)', flexShrink: 0 }}></div>
             
-            {/* Socials */}
-            <div style={{ display: 'flex', gap: '1.5rem', marginTop: '2rem', color: '#888' }}>
-                <Instagram size={20} />
-                <Twitter size={20} />
-                <Youtube size={20} />
-                <Mail size={20} />
+            <div style={{ padding: '0 1.5rem 2rem', marginTop: '-48px', flex: 1 }}>
+                {renderHeader()}
+                {renderTabs()}
+
+                {activeTab === 'home' && (
+                    <div style={{ maxWidth: '500px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {/* Latest Drop */}
+                        <div style={{ background: '#111', color: '#fff', borderRadius: '16px', padding: '1.5rem', position: 'relative', overflow: 'hidden', cursor: 'pointer' }}>
+                            <div style={{ position: 'relative', zIndex: 2 }}>
+                                <span style={{ background: '#FF5F56', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold' }}>NEW</span>
+                                <h3 style={{ fontSize: '1.2rem', marginTop: '0.5rem', marginBottom: '0.2rem' }}>The Freelance OS Template</h3>
+                                <p style={{ color: '#aaa', fontSize: '0.9rem' }}>Organize your entire creative business.</p>
+                            </div>
+                            <ArrowRight style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem', zIndex: 2 }} />
+                        </div>
+
+                        {/* Link List */}
+                        {[
+                            '🎨 My Digital Brush Pack (Free)',
+                            '📅 Book a 1:1 Portfolio Review',
+                            '📹 Watch my latest Studio Vlog'
+                        ].map((link, i) => (
+                            <div key={i} style={{ 
+                                padding: '1rem', 
+                                border: '1px solid #eee', 
+                                borderRadius: '12px', 
+                                fontWeight: '600',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                                transition: 'background 0.2s'
+                            }}
+                            className="hover-bg-gray"
+                            >
+                                {link} <ArrowRight size={16} color="#ccc" />
+                            </div>
+                        ))}
+
+                        {/* Newsletter */}
+                        <div style={{ marginTop: '2rem', background: '#F9FAFB', padding: '1.5rem', borderRadius: '16px', textAlign: 'center' }}>
+                            <Mail size={24} style={{ marginBottom: '0.5rem', color: '#111' }} />
+                            <h4 style={{ margin: '0 0 0.5rem 0' }}>Join the Creative Club</h4>
+                            <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1rem' }}>Weekly tips on design & business. No spam.</p>
+                            {!subscribed ? (
+                                <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <input 
+                                        type="email" 
+                                        placeholder="your@email.com" 
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        style={{ flex: 1, padding: '0.7rem', borderRadius: '8px', border: '1px solid #ddd' }}
+                                    />
+                                    <button style={{ background: '#111', color: '#fff', border: 'none', borderRadius: '8px', padding: '0 1rem', cursor: 'pointer' }}>Join</button>
+                                </form>
+                            ) : (
+                                <div style={{ color: '#10B981', fontWeight: '600' }}>✨ You're on the list!</div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'content' && (
+                    <div style={{ maxWidth: '600px', margin: '0 auto', display: 'grid', gap: '1.5rem' }}>
+                         {[1, 2, 3].map((i) => (
+                             <div key={i} style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid #eee' }}>
+                                 <div style={{ height: '180px', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                     <Video size={40} color="#ccc" />
+                                 </div>
+                                 <div style={{ padding: '1rem' }}>
+                                      <h4 style={{ margin: 0, marginBottom: '0.5rem' }}>How to find your art style in 2026</h4>
+                                     <div style={{ display: 'flex', gap: '1rem', color: '#666', fontSize: '0.8rem' }}>
+                                         <span>12k views</span>
+                                         <span>2 days ago</span>
+                                     </div>
+                                 </div>
+                             </div>
+                         ))}
+                    </div>
+                )}
+
+                {activeTab === 'shop' && (
+                    <div style={{ maxWidth: '600px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        {[
+                            { name: 'Brush Pack V2', price: '$29' },
+                            { name: 'Texture Bundle', price: '$19' },
+                            { name: 'Lightroom Presets', price: '$35' },
+                            { name: 'Procreate Course', price: '$149' }
+                        ].map((item, i) => (
+                            <div key={i} style={{ border: '1px solid #eee', borderRadius: '12px', padding: '1rem', cursor: 'pointer' }}>
+                                <div style={{ height: '100px', background: '#f5f5f5', borderRadius: '8px', marginBottom: '1rem' }}></div>
+                                <h4 style={{ fontSize: '0.95rem', margin: '0 0 0.2rem 0' }}>{item.name}</h4>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span style={{ fontWeight: '600' }}>{item.price}</span>
+                                    <span style={{ fontSize: '0.8rem', background: '#111', color: '#fff', padding: '2px 6px', borderRadius: '4px' }}>Buy</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
             </div>
         </div>
     );
