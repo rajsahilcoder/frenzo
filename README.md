@@ -2,78 +2,66 @@
 
 The official website for **Frenzo**, a global digital growth systems company.
 
-## 🚀 Overview
+## 🚀 Live Demo
 
-Frenzo empowers creators and businesses to build independent, scalable, and revenue-driven digital infrastructure. This repository contains the source code for the Frenzo public-facing website.
+**URL**: [https://rajsahilcoder.github.io/frenzo/](https://rajsahilcoder.github.io/frenzo/)
 
-## 🛠️ Tech Stack
+_(Note: The site will be live here **after** you push the code to GitHub and the Action completes.)_
 
-- **Framework**: React (via Vite)
-- **Styling**: Vanilla CSS (Variables, Flexbox/Grid) for premium, lightweight design.
-- **Routing**: `react-router-dom`
-- **Deployment**: GitHub Actions (Pages)
+## ⚡ How to Deploy (Important!)
 
-## ⚡ Getting Started
+You are currently running the code locally. To deploy it to the live URL above, you must **push the code to GitHub**.
+
+Run these commands in your terminal:
+
+```bash
+# 1. Add your GitHub repository as the remote origin
+git remote add origin https://github.com/rajsahilcoder/frenzo.git
+
+# 2. Rename the current branch to 'main'
+git branch -M main
+
+# 3. Push the code
+git push -u origin main
+```
+
+**What happens next?**
+
+1.  GitHub Actions will automatically trigger.
+2.  It will build the website.
+3.  It will deploy it to the `gh-pages` branch.
+4.  After about 1-2 minutes, your site will be live at the URL above.
+
+---
+
+## 🛠️ Local Development vs. Deployment
+
+- **`npm run dev`**: This is for **YOU** to see the changes on your computer while you code. It runs at `http://localhost:5173`. No one else can see this.
+- **Deployment**: This is when you push code to GitHub to make it public on the internet at `https://rajsahilcoder.github.io/frenzo/`.
+
+## 📦 Project Setup
 
 ### Prerequisites
 
-- Node.js (v18 or higher recommended)
+- Node.js (v18+)
 - npm
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/frenzo.git
-   cd frenzo
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-### Development
-
-Start the local development server:
+### Start Local Server
 
 ```bash
 npm run dev
 ```
 
-Access the site at `http://localhost:5173`.
+## ⚙️ Configuration Notes
 
-## 📦 Building for Production
-
-To create a production build (outputs to `/dist`):
-
-```bash
-npm run build
-```
-
-## 🚀 Deployment (GitHub Actions)
-
-This project is configured to automatically deploy to **GitHub Pages** using GitHub Actions.
-
-### Workflow
-
-The deployment workflow is defined in `.github/workflows/deploy.yml`.
-
-1.  **Trigger**: Pushes to the `main` branch.
-2.  **Build**: Installs dependencies and runs `npm run build`.
-3.  **Deploy**: Uploads the `dist` folder to the `gh-pages` branch using `JamesIves/github-pages-deploy-action`.
-
-### Setup Steps
-
-To enable deployment on your GitHub repository:
-
-1.  **Push Code**: Push this code to your GitHub repository (main branch).
-2.  **Wait for Action**: The Action will run automatically on push. Wait for it to complete (check the "Actions" tab).
-3.  **Configure Pages**:
-    - Go to **Settings > Pages** in your repository.
-    - Under **Source**, select **Deploy from a branch**.
-    - Select **gh-pages** as the branch.
-    - Click **Save**.
-4.  **Live Site**: Your site will be live at `https://<username>.github.io/frenzo/`.
+- **Base Path**: The app is configured with `base: '/frenzo/'` in `vite.config.js` to work on GitHub Pages.
+- **Routing**: `App.jsx` uses `basename="/frenzo"` to handle routing correctly on the live site.
 
 ## 📂 Project Structure
 
@@ -81,11 +69,10 @@ To enable deployment on your GitHub repository:
 src/
 ├── components/
 │   ├── layout/    # Navbar, Footer
-│   └── ui/        # Reusable UI components (Button, Card, Section)
-├── pages/         # Page components (Home, About, Services, etc.)
-├── styles/        # Global CSS and variables
-├── App.jsx        # Main application component & Routing
-└── main.jsx       # Entry point
+│   └── ui/        # Reusable components
+├── pages/         # Core pages
+├── styles/        # Global CSS
+└── App.jsx        # Main router
 ```
 
 ## 📄 License

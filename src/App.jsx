@@ -11,7 +11,7 @@ import ScrollToTop from './components/ui/ScrollToTop';
 // Simple ScrollToTop component
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }} basename="/frenzo">
       <ScrollToTop />
       <Layout>
         <Routes>
