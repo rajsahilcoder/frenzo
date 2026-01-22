@@ -3,6 +3,7 @@ import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
+import ServiceDetail from './pages/ServiceDetail';
 import Vision from './pages/Vision';
 import Contact from './pages/Contact';
 import HowItWorks from './pages/HowItWorks';
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/vision" element={<Vision />} />
           <Route path="/contact" element={<Contact />} />

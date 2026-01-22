@@ -2,82 +2,10 @@ import React from 'react';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { ArrowRight, CheckCircle, Smartphone, Globe, ShoppingBag, Users, Zap, Layout, Play, BarChart, Server } from 'lucide-react';
+import { servicesData } from '../data/servicesData';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 
 const Services = () => {
-  const catalog = [
-    {
-      title: 'Creator Website',
-      description: 'A personal content hub that converts audience attention into owned revenue streams.',
-      features: ['Custom creator website', 'Email capture & audience ownership', 'Blog / video embedding', 'Lead magnets & funnels', 'Analytics & tracking'],
-      bestFor: 'YouTubers, podcasters, writers',
-      icon: <Globe size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'Course Platform',
-      description: 'A complete platform to sell courses directly without relying on third-party marketplaces.',
-      features: ['Course hosting', 'Secure login', 'Payments & subscriptions', 'Progress tracking', 'Certificates & automation'],
-      bestFor: 'Educators, coaches, trainers',
-      icon: <Play size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'E-commerce Store',
-      description: 'A scalable product selling platform designed for high conversion and brand ownership.',
-      features: ['Product catalog', 'Checkout & payments', 'Order management', 'Inventory tracking', 'CRM integration'],
-      bestFor: 'D2C brands, startups',
-      icon: <ShoppingBag size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'Membership Platform',
-      description: 'A gated platform for exclusive content, community, and recurring revenue.',
-      features: ['Member login', 'Tiered subscriptions', 'Premium content access', 'Community features', 'Automated renewals'],
-      bestFor: 'Niche communities, creators',
-      icon: <Users size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'Newsletter Platform',
-      description: 'Own your audience and monetize newsletters without platform restrictions.',
-      features: ['Email list ownership', 'Paid & free newsletters', 'Subscriber analytics', 'Automated campaigns', 'Payment integrations'],
-      bestFor: 'Writers, analysts',
-      icon: <Layout size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'Coaching Platform',
-      description: 'A professional platform to sell high-ticket consulting or coaching services.',
-      features: ['Booking & scheduling', 'Client dashboards', 'Payments & invoices', 'Resource sharing', 'CRM integrations'],
-      bestFor: 'Consultants, advisors',
-      icon: <Users size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'Community Network',
-      description: 'Build a private, owned community instead of relying on social media groups.',
-      features: ['Member access', 'Discussions & posts', 'Events & live sessions', 'Notifications', 'Subscription management'],
-      bestFor: 'Founders, niche groups',
-      icon: <Users size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'SaaS / MVP Builder',
-      description: 'Launch your own SaaS or internal tool with scalable architecture.',
-      features: ['User authentication', 'Admin dashboard', 'API integrations', 'Subscription billing', 'Analytics'],
-      bestFor: 'Startups, agencies',
-      icon: <Server size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'AI Automation System',
-      description: 'Custom automation and AI systems that save time and unlock efficiency.',
-      features: ['Workflow automation', 'AI integrations', 'Data pipelines', 'Custom dashboards', 'System optimization'],
-      bestFor: 'Growing businesses',
-      icon: <Zap size={32} color="var(--accent-primary)" />
-    },
-    {
-      title: 'Migration & Independence',
-      description: 'Move your business off third-party platforms and regain control.',
-      features: ['Platform migration', 'Data ownership', 'Custom infrastructure', 'Monetization redesign', 'Scalability setup'],
-      bestFor: 'Platform-dependent businesses',
-      icon: <BarChart size={32} color="var(--accent-primary)" />
-    }
-  ];
-
   return (
     <div style={{ paddingTop: 'var(--header-height)' }}>
       {/* Hero */}
@@ -98,9 +26,9 @@ const Services = () => {
            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
            gap: '2rem' 
           }}>
-            {catalog.map((item, i) => (
-              <Card key={i}>
-                <div style={{ marginBottom: '1.5rem' }}>{item.icon}</div>
+            {servicesData.map((item) => (
+              <Card key={item.id}>
+                <div style={{ marginBottom: '1.5rem', color: item.color }}>{item.icon}</div>
                 <h3 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>{item.title}</h3>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', minHeight: '3rem' }}>{item.description}</p>
                 
@@ -115,7 +43,7 @@ const Services = () => {
                 </div>
 
                 <ul style={{ listStyle: 'none', marginBottom: '2rem', flex: 1 }}>
-                  {item.features.map((feat, j) => (
+                  {item.features.slice(0, 3).map((feat, j) => (
                     <li key={j} style={{ 
                       marginBottom: '0.5rem', 
                       display: 'flex', 
@@ -124,18 +52,22 @@ const Services = () => {
                       color: 'var(--text-secondary)',
                       fontSize: '0.95rem'
                     }}>
-                      <CheckCircle size={16} color="var(--accent-primary)" /> {feat}
+                      <CheckCircle size={16} color={item.color} /> {feat}
                     </li>
                   ))}
+                  {item.features.length > 3 && (
+                     <li style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem', paddingLeft: '1.75rem' }}>+ more features</li>
+                  )}
                 </ul>
 
-                <Button to="/contact" variant="outline" style={{ width: '100%' }}>
-                  Request This Solution <ArrowRight size={16} style={{ marginLeft: '0.5rem' }} />
+                <Button to={`/services/${item.id}`} variant="outline" style={{ width: '100%' }}>
+                  View Demo & Details <ArrowRight size={16} style={{ marginLeft: '0.5rem' }} />
                 </Button>
               </Card>
             ))}
          </div>
       </Section>
+
 
       {/* Final CTA */}
       <Section dark>
