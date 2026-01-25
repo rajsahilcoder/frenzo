@@ -1,9 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Section from '../components/ui/Section';
-import { Check, ArrowRight, Zap, Shield, Crown } from 'lucide-react';
+import { Check, ArrowRight, Zap, Shield, Crown, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Pricing = () => {
+  const [currency, setCurrency] = useState('USD');
+  const [loading, setLoading] = useState(true);
+
+  // Pricing Data
+  const prices = {
+    USD: {
+      launch: '$1,500 - $3,500',
+      scale: '$2,500', 
+    },
+    INR: {
+      launch: '₹50,000 - ₹1,50,000',
+      scale: '₹2,50,000',
+    }
+  };
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.country_code === 'IN') {
+          setCurrency('INR');
+        } else {
+          setCurrency('USD');
+        }
+      } catch (error) {
+        console.error('Failed to detect location, defaulting to USD', error);
+        setCurrency('USD');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLocation();
+  }, []);
+
+  const currentPrices = prices[currency];
+
   return (
     <div style={{ paddingTop: '80px' }}>
       <Section dark>
@@ -14,6 +52,7 @@ const Pricing = () => {
           <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
             Stop paying monthly platform rent. Build an asset you own forever.
           </p>
+          {loading && <div style={{ marginTop: '1rem', color: '#666', display: 'flex', justifyContent: 'center', gap: '8px' }}><Loader2 className="spin" size={20} /> Loading local pricing...</div>}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
@@ -24,7 +63,9 @@ const Pricing = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', color: '#9ca3af' }}>
                 <Zap size={20} /> <span style={{ textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem', fontWeight: 'bold' }}>Launch</span>
               </div>
-              <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>$4,500</h3>
+              <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
+                {loading ? '...' : currentPrices.launch}
+              </h3>
               <p style={{ color: '#666' }}>One-time investment</p>
             </div>
             <p style={{ color: '#ccc', lineHeight: '1.6', marginBottom: '2rem' }}>
@@ -49,7 +90,9 @@ const Pricing = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', color: 'var(--accent-primary)' }}>
                 <Shield size={20} /> <span style={{ textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem', fontWeight: 'bold' }}>Scale</span>
               </div>
-              <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>$8,500</h3>
+              <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
+                 {loading ? '...' : currentPrices.scale}
+              </h3>
               <p style={{ color: '#666' }}>One-time investment</p>
             </div>
             <p style={{ color: '#ccc', lineHeight: '1.6', marginBottom: '2rem' }}>
@@ -101,5 +144,6 @@ const Pricing = () => {
     </div>
   );
 };
+
 
 export default Pricing;
