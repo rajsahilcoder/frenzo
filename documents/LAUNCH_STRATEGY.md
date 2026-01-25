@@ -50,6 +50,5 @@ Your current website has **zero SEO**. Google doesn't know what it is about beca
 
 To make it feel "Premium":
 
-1.  **Custom Domain**: Buy `frenzo.services` or similar (approx $10-20/year on Namecheap/Cloudflare). Hosting on a subdomain (`github.io`) hurts trust for B2B services.
-2.  **Performance**: Optimize the large video file (lazy load it) so the site loads instantly.
-3.  **Analytics**: Add a privacy-friendly analytics tool (like PostHog or Plausible) to see where users drop off, instead of heavyweight Google Analytics.
+1.  **Performance**: Optimize the large video file (lazy load it) so the site loads instantly.
+2.  **Analytics**: Add a privacy-friendly analytics tool (like PostHog or Plausible) to see where users drop off, instead of heavyweight Google Analytics.
