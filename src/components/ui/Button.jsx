@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Button = ({ children, to, variant = 'primary', className = '', ...props }) => {
+const Button = ({ children, to, variant = 'primary', className = '', style: propStyle = {}, ...props }) => {
   const baseStyle = {
     padding: '0.8rem 2rem',
     borderRadius: '2rem',
@@ -18,7 +18,7 @@ const Button = ({ children, to, variant = 'primary', className = '', ...props })
   const variants = {
     primary: {
       background: 'var(--text-primary)',
-      color: 'var(--bg-primary)',
+      color: '#000000', // Hardcoded for max visibility
       border: '1px solid var(--text-primary)',
     },
     outline: {
@@ -39,7 +39,7 @@ const Button = ({ children, to, variant = 'primary', className = '', ...props })
     }
   };
 
-  const style = { ...baseStyle, ...variants[variant] };
+  const mergedStyle = { ...baseStyle, ...variants[variant], ...propStyle };
 
   const handleMouseEnter = (e) => {
     if (variant === 'primary') {
@@ -64,7 +64,7 @@ const Button = ({ children, to, variant = 'primary', className = '', ...props })
     return (
       <Link 
         to={to} 
-        style={style} 
+        style={mergedStyle} 
         className={className} 
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -77,7 +77,7 @@ const Button = ({ children, to, variant = 'primary', className = '', ...props })
 
   return (
     <button 
-      style={style} 
+      style={mergedStyle} 
       className={className} 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
