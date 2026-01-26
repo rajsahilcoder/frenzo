@@ -10,6 +10,27 @@
       gtag('js', new Date());
 
       gtag('config', 'AW-17906236393');
+      
+      // Phone Call Lead Config
+      gtag('config', 'AW-17906236393/wHcPCLqTj-0bEOn3rdpC', {
+        'phone_conversion_number': '+91 8904045305'
+      });
+
+      // Click to Call Conversion Snippet
+      function gtag_report_conversion(url) {
+        var callback = function () {
+          if (typeof(url) != 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
+            'send_to': 'AW-17906236393/PXikCLeTj-0bEOn3rdpC',
+            'value': 1.0,
+            'currency': 'INR',
+            'event_callback': callback
+        });
+        return false;
+      }
     </script>
     <link rel="icon" type="image/png" href="/assets/logo-Ct8KTLpg.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,7 +40,7 @@
     <meta property="og:title" content="Frenzo | Build Independent" />
     <meta property="og:description" content="Custom Course Platforms, Commerce Stores, and Creator Hubs. Built for ownership." />
     <!-- Sitemap hint usually goes in robots.txt but putting verification here if needed -->
-    <script type="module" crossorigin src="/assets/index-BCO6OLBv.js"></script>
+    <script type="module" crossorigin src="/assets/index-C1Ofwqvk.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-BfEJIi5N.css">
   </head>
   <body>
