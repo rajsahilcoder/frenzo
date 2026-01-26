@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Section from '../components/ui/Section';
-import { Check, ArrowRight, Zap, Shield, Crown, Loader2, Smartphone, Globe, Cpu, Bot, Layers } from 'lucide-react';
+import { Check, ArrowRight, Zap, Shield, Crown, Loader2, Smartphone, Globe, Cpu, Bot, Layers, FileText, Monitor } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Pricing = () => {
@@ -8,34 +8,32 @@ const Pricing = () => {
   const [loading, setLoading] = useState(true);
 
   // Calculator State
-  const [platform, setPlatform] = useState('web'); // web, mobile, ecosystem
-  const [intelligence, setIntelligence] = useState('none'); // none, chatbot, agent
-  const [design, setDesign] = useState('custom'); // template, custom, motion
+  const [projectType, setProjectType] = useState('landing'); // landing, business, webapp, mobile, ecosystem
+  const [intelligence, setIntelligence] = useState('none'); 
+  const [design, setDesign] = useState('template'); 
+  const [pages, setPages] = useState(1);
   const [features, setFeatures] = useState([]);
 
-  // Pricing Matrix
-  const rates = {
-    USD: {
-      platform: { web: 2500, mobile: 5000, ecosystem: 9000 },
-      intelligence: { none: 0, chatbot: 1500, agent: 5000 },
-      design: { template: 0, custom: 2000, motion: 4000 },
-      features: {
-        cms: 500,
-        auth: 1000,
-        payments: 1000,
-        analytics: 500,
-      }
+  // Base Rates in USD (INR will be calculated: USD * 40)
+  const usdRates = {
+    type: { 
+      landing: 300,        // Bridges gap from 50 -> 2500
+      business: 800,       // Mid-tier
+      webapp: 2500,        // High-tier
+      mobile: 5000, 
+      ecosystem: 9000 
     },
-    INR: {
-      platform: { web: 85000, mobile: 180000, ecosystem: 350000 },
-      intelligence: { none: 0, chatbot: 50000, agent: 150000 },
-      design: { template: 0, custom: 60000, motion: 120000 },
-      features: {
-        cms: 15000,
-        auth: 30000,
-        payments: 30000,
-        analytics: 15000,
-      }
+    intelligence: { none: 0, chatbot: 1000, agent: 4000 },
+    design: { template: 0, custom: 500, motion: 1500 },
+    pageRate: 50, // Per additional page
+    features: {
+      cms: 300,
+      auth: 800,
+      payments: 800,
+      analytics: 300,
+      seo: 400,
+      copywriting: 200,
+      logo: 150
     }
   };
 
@@ -59,18 +57,27 @@ const Pricing = () => {
     fetchLocation();
   }, []);
 
-  // Calculation Logic
+  // Conversion Helper: price * 100 / 2.5 = price * 40
+  const convert = (usdPrice) => {
+    if (currency === 'USD') return usdPrice;
+    return usdPrice * 40;
+  };
+
   const calculateTotal = () => {
-    const r = rates[currency];
-    let total = r.platform[platform];
-    total += r.intelligence[intelligence];
-    total += r.design[design];
+    let total = usdRates.type[projectType];
+    total += usdRates.intelligence[intelligence];
+    total += usdRates.design[design];
+    
+    // Page cost applies mostly to web projects
+    if (['landing', 'business', 'webapp'].includes(projectType)) {
+       total += (Math.max(1, pages) - 1) * usdRates.pageRate;
+    }
     
     features.forEach(f => {
-      total += r.features[f];
+      total += usdRates.features[f];
     });
 
-    return total;
+    return convert(total);
   };
 
   const formatPrice = (amount) => {
@@ -94,13 +101,13 @@ const Pricing = () => {
       <Section dark>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', background: 'linear-gradient(to right, #fff, #aaa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Build Your Empire
+            Build Your Platform
           </h1>
           <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 2rem' }}>
-            From simple web apps to AI-powered mobile ecosystems. Define your scale.
+            From simple landing pages to complex ecosystems. Pricing that scales with your ambition.
           </p>
           <Link to="/services" style={{ color: 'var(--accent-primary)', fontWeight: '600', textDecoration: 'none', fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-             Not sure what you need? Explore our Services <ArrowRight size={16} />
+             Explore Services <ArrowRight size={16} />
           </Link>
           {loading && <div style={{ marginTop: '2rem', color: '#666', display: 'flex', justifyContent: 'center', gap: '8px' }}><Loader2 className="spin" size={20} /> calibration location pricing...</div>}
         </div>
@@ -129,17 +136,17 @@ const Pricing = () => {
             <div style={{ padding: '1.5rem', background: '#111', borderRadius: '16px', marginBottom: '2rem' }}>
               <p style={{ fontSize: '0.9rem', color: '#ccc', lineHeight: '1.6' }}>
                 <strong style={{ color: '#fff' }}>The "No Excuses" Plan.</strong><br/>
-                We deploy a professional HTML5 portfolio/landing page for you.
+                We deploy a professional single-page website for you.
               </p>
             </div>
 
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2.5rem', flex: 1 }}>
                {[
-                 'Static HTML5/CSS3 Site', 
+                 'Professional Portfolio / Links Page', 
                  'Hosted on GitHub Pages (Free)', 
-                 'You provide Domain + Text', 
+                 'You provide Domain + Content', 
                  'Delivery in 48 Hours',
-                 'No CMS / No Backend'
+                 'No Backend / No CMS'
                 ].map((item, i) => (
                  <li key={i} style={{ display: 'flex', gap: '10px', color: '#888', fontSize: '0.95rem' }}>
                    <Check size={18} color="#444" /> {item}
@@ -162,7 +169,7 @@ const Pricing = () => {
           </div>
 
 
-          {/* THE CALCULATOR: Empire Builder */}
+          {/* THE CALCULATOR: Scale Builder */}
           <div style={{ 
             background: '#111', 
             border: '1px solid #333', 
@@ -175,71 +182,49 @@ const Pricing = () => {
               CUSTOM BUILDER
             </div>
 
-            <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Configure Your Platform</h2>
+            <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Configure Project</h2>
 
-            {/* 1. Platform Type */}
+            {/* 1. Project Type */}
             <div style={{ marginBottom: '2rem' }}>
-               <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>1. Platform Scale</label>
+               <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>1. Project Scope</label>
+               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
+                  <button onClick={() => setProjectType('landing')} style={getTypeStyle('landing', projectType)}>
+                     <FileText size={18} /> <span style={{fontSize:'0.9rem'}}>Landing Page</span>
+                  </button>
+                  <button onClick={() => setProjectType('business')} style={getTypeStyle('business', projectType)}>
+                     <Monitor size={18} /> <span style={{fontSize:'0.9rem'}}>Business Site</span>
+                  </button>
+               </div>
                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.8rem' }}>
-                  {[
-                    { id: 'web', label: 'Web Application', icon: Globe },
-                    { id: 'mobile', label: 'Mobile App', icon: Smartphone },
-                    { id: 'ecosystem', label: 'Ecosystem', icon: Layers }
-                  ].map(p => (
-                    <button 
-                      key={p.id}
-                      onClick={() => setPlatform(p.id)}
-                      style={{ 
-                        padding: '0.8rem', borderRadius: '12px', border: platform === p.id ? '2px solid var(--accent-primary)' : '1px solid #333',
-                        background: platform === p.id ? 'rgba(37, 99, 235, 0.1)' : 'transparent',
-                        textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px'
-                      }}
-                    >
-                       <p.icon size={20} color={platform === p.id ? '#fff' : '#666'} />
-                       <span style={{ fontSize: '0.8rem', color: platform === p.id ? '#fff' : '#888', fontWeight: '600' }}>{p.label}</span>
-                    </button>
-                  ))}
+                   <button onClick={() => setProjectType('webapp')} style={getTypeStyle('webapp', projectType)}>
+                     <Globe size={18} /> <span style={{fontSize:'0.9rem'}}>Web App</span>
+                  </button>
+                  <button onClick={() => setProjectType('mobile')} style={getTypeStyle('mobile', projectType)}>
+                     <Smartphone size={18} /> <span style={{fontSize:'0.9rem'}}>Mobile App</span>
+                  </button>
+                  <button onClick={() => setProjectType('ecosystem')} style={getTypeStyle('ecosystem', projectType)}>
+                     <Layers size={18} /> <span style={{fontSize:'0.9rem'}}>Ecosystem</span>
+                  </button>
                </div>
             </div>
 
-            {/* 2. Intelligence Layer */}
-            <div style={{ marginBottom: '2rem' }}>
-               <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>2. Intelligence Layer</label>
-               <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.8rem' }}>
-                  <button 
-                    onClick={() => setIntelligence('none')}
-                     style={{ 
-                      padding: '0.8rem 1rem', borderRadius: '8px', 
-                      border: intelligence === 'none' ? '1px solid #fff' : '1px solid #333',
-                      background: intelligence === 'none' ? '#222' : 'transparent', textAlign: 'left', color: '#fff'
-                    }}
-                  >
-                    No AI (Standard Logic)
-                  </button>
-                  <button 
-                    onClick={() => setIntelligence('chatbot')}
-                     style={{ 
-                      padding: '0.8rem 1rem', borderRadius: '8px', 
-                      border: intelligence === 'chatbot' ? '1px solid var(--accent-primary)' : '1px solid #333',
-                      background: intelligence === 'chatbot' ? 'rgba(37, 99, 235, 0.15)' : 'transparent', textAlign: 'left', color: '#fff',
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                    }}
-                  >
-                    <span>Smart Chatbot (RAG/Support)</span> <Bot size={16} color="var(--accent-primary)"/>
-                  </button>
-                  <button 
-                    onClick={() => setIntelligence('agent')}
-                     style={{ 
-                      padding: '0.8rem 1rem', borderRadius: '8px', 
-                      border: intelligence === 'agent' ? '1px solid var(--accent-primary)' : '1px solid #333',
-                      background: intelligence === 'agent' ? 'rgba(37, 99, 235, 0.15)' : 'transparent', textAlign: 'left', color: '#fff',
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                    }}
-                  >
-                    <span>Autonomous Agents (Complex Tasks)</span> <Cpu size={16} color="var(--accent-primary)"/>
-                  </button>
-               </div>
-            </div>
+            {/* 2. Scale (Pages) - Only for Web Types */}
+            {['landing', 'business', 'webapp'].includes(projectType) && (
+              <div style={{ marginBottom: '2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <label style={{ color: '#888', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>2. Scale / Pages</label>
+                  <span style={{ color: '#fff', fontWeight: 'bold' }}>{pages} Pages</span>
+                </div>
+                <input 
+                  type="range" min="1" max="20" value={pages} onChange={(e) => setPages(parseInt(e.target.value))}
+                  style={{ width: '100%', accentColor: 'var(--accent-primary)', cursor: 'pointer' }}
+                />
+                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.75rem', color: '#555' }}>
+                    <span>1 Page</span>
+                    <span>20+ Pages</span>
+                 </div>
+              </div>
+            )}
 
             {/* 3. Design Level */}
             <div style={{ marginBottom: '2rem' }}>
@@ -262,16 +247,41 @@ const Pricing = () => {
                   ))}
                </div>
             </div>
+            
+             {/* 4. Intelligence Layer */}
+            <div style={{ marginBottom: '2rem' }}>
+               <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>4. Intelligence (AI)</label>
+               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.8rem' }}>
+                  {['none', 'chatbot', 'agent'].map(ai => (
+                    <button 
+                      key={ai}
+                      onClick={() => setIntelligence(ai)}
+                      style={{ 
+                        padding: '0.8rem', borderRadius: '8px', 
+                        border: intelligence === ai ? '1px solid var(--accent-primary)' : '1px solid #333',
+                        background: intelligence === ai ? 'rgba(37, 99, 235, 0.15)' : 'transparent', 
+                        color: intelligence === ai ? '#fff' : '#888',
+                        textTransform: 'capitalize', fontWeight: '500', fontSize: '0.9rem'
+                      }}
+                    >
+                      {ai === 'none' ? 'None' : ai === 'chatbot' ? 'Smart Chatbot' : 'AI Agent'}
+                    </button>
+                  ))}
+               </div>
+            </div>
 
-            {/* 4. Core Features */}
+            {/* 5. Add-ons */}
             <div style={{ marginBottom: '3rem' }}>
-               <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>4. Core Infrastructure</label>
+               <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>5. Add-ons</label>
                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
                   {[
-                    { id: 'auth', label: 'User Auth + DB' },
-                    { id: 'payments', label: 'Payment Gateway' },
-                    { id: 'cms', label: 'CMS Dashboard' },
-                    { id: 'analytics', label: 'Adv. Analytics' }
+                    { id: 'cms', label: 'CMS (Easy Edits)' },
+                    { id: 'auth', label: 'User Login/DB' },
+                    { id: 'payments', label: 'Payment Integration' },
+                    { id: 'analytics', label: 'Advanced Analytics' },
+                    { id: 'seo', label: 'SEO Optimization' },
+                    { id: 'copywriting', label: 'Pro Copywriting' },
+                    { id: 'logo', label: 'Logo Design' }
                   ].map((feat) => (
                     <div 
                       key={feat.id}
@@ -280,13 +290,13 @@ const Pricing = () => {
                         display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', cursor: 'pointer',
                         border: features.includes(feat.id) ? '1px solid var(--accent-primary)' : '1px solid #222',
                         background: features.includes(feat.id) ? 'rgba(37, 99, 235, 0.05)' : 'transparent',
-                        fontSize: '0.9rem'
+                        fontSize: '0.85rem'
                       }}
                     >
                        <div style={{ 
                          width: '16px', height: '16px', borderRadius: '4px', border: '1px solid #555', 
                          background: features.includes(feat.id) ? 'var(--accent-primary)' : 'transparent',
-                         display: 'flex', alignItems: 'center', justifyContent: 'center'
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                        }}>
                          {features.includes(feat.id) && <Check size={12} color="#fff" />}
                        </div>
@@ -306,8 +316,8 @@ const Pricing = () => {
                </div>
                
                <Link to="/contact" state={{ 
-                 plan: 'Custom Empire Build', 
-                 features: `Platform: ${platform}, AI: ${intelligence}, Design: ${design}, Infra: ${features.join(', ')}`,
+                 plan: 'Custom Build', 
+                 features: `Type: ${projectType}, Pages: ${pages}, AI: ${intelligence}, Design: ${design}, Extras: ${features.join(', ')}`,
                  estimatedPrice: formatPrice(calculateTotal())
                }} style={{ 
                   display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '1.2rem', 
@@ -318,7 +328,7 @@ const Pricing = () => {
                   Book Build Strategy <ArrowRight size={20} style={{ marginLeft: '10px' }} />
                </Link>
                <p style={{ textAlign: 'center', fontSize: '0.8rem', color: '#555', marginTop: '1rem' }}>
-                 *Final quote provided after technical discovery call.
+                 *Rough estimate. Final quote provided after discovery call.
                </p>
             </div>
 
@@ -329,5 +339,13 @@ const Pricing = () => {
     </div>
   );
 };
+
+const getTypeStyle = (id, current) => ({
+  padding: '0.8rem', borderRadius: '12px', 
+  border: current === id ? '2px solid var(--accent-primary)' : '1px solid #333',
+  background: current === id ? 'rgba(37, 99, 235, 0.1)' : 'transparent',
+  textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
+  color: current === id ? '#fff' : '#888'
+});
 
 export default Pricing;
