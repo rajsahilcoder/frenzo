@@ -49,11 +49,17 @@ npm run dev
 
 ## 📂 Project Structure
 
+We follow a **Feature-Sliced (Hybrid)** architectural pattern to ensure scalability and separation of concerns.
+
 ```
-public/
-  CNAME            # Custom domain configuration file
 src/
-  components/      # UI Components
-  pages/           # Route Pages
-  styles/          # Global CSS
+├── assets/          # Static assets (images, fonts)
+├── components/      # Shared Design System (Buttons, Layouts)
+├── features/        # Complex Business Logic (Pricing, Contact)
+│   ├── pricing/     # e.g., Pricing Logic, Constants, & UI
+├── hooks/           # Shared Global Hooks
+├── pages/           # Routing & Composition
+└── styles/          # Global CSS
 ```
+
+👉 **[Read full Architectural Guidelines](documents/ARCHITECTURE.md)**
