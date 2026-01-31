@@ -20,7 +20,7 @@ const PricingCalculator = () => {
   const { setProjectType, setIntelligence, setDesign, setPages, toggleFeature } = actions;
 
   return (
-    <div style={{ background: '#111', border: '1px solid #333', borderRadius: '24px', padding: '2.5rem', position: 'relative', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
+    <div style={{ background: '#111', border: '1px solid #333', borderRadius: '24px', padding: 'clamp(1.5rem, 4vw, 2.5rem)', position: 'relative', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
       <div style={{ background: 'var(--accent-primary)', position: 'absolute', top: '-15px', right: '2rem', padding: '6px 16px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 'bold', color: '#fff' }}>
         CUSTOM BUILDER
       </div>
@@ -30,7 +30,7 @@ const PricingCalculator = () => {
       {/* 1. Foundation Type */}
       <div style={{ marginBottom: '2rem' }}>
          <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>1. Foundation Type</label>
-         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginBottom: '0.8rem' }}>
+         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.8rem', marginBottom: '0.8rem' }}>
             <button onClick={() => setProjectType('standard')} style={getTypeStyle('standard', projectType)}>
                <div style={{display:'flex', alignItems:'center'}}>
                   <FileText size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Dynamic Web</span>
@@ -44,7 +44,7 @@ const PricingCalculator = () => {
                </div>
             </button>
          </div>
-         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.8rem' }}>
+         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: '0.8rem' }}>
              <button onClick={() => setProjectType('platform')} style={getTypeStyle('platform', projectType)}>
                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                  <Globe size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Platform</span>
@@ -123,7 +123,7 @@ const PricingCalculator = () => {
        {/* 4. Intelligence Layer */}
       <div style={{ marginBottom: '2rem' }}>
          <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>4. Intelligence (AI)</label>
-         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.8rem' }}>
+         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.8rem' }}>
             {INTELLIGENCE_OPTIONS.map(ai => (
               <button 
                 key={ai}
@@ -148,7 +148,7 @@ const PricingCalculator = () => {
       {/* 5. Add-ons */}
       <div style={{ marginBottom: '3rem' }}>
          <label style={{ display: 'block', color: '#888', marginBottom: '1rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>5. Modules & Add-ons</label>
-         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
+         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.8rem' }}>
             {ADDONS.map((feat) => (
               <div 
                 key={feat.id}

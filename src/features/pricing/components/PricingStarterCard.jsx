@@ -6,7 +6,7 @@ const PricingStarterCard = () => {
   return (
     <div style={{ 
       background: '#050505', 
-      border: '1px solid #222', borderRadius: '24px', padding: '2.5rem', 
+      border: '1px solid #222', borderRadius: '24px', padding: 'clamp(1.5rem, 4vw, 2.5rem)', 
       display: 'flex', flexDirection: 'column', height: 'fit-content' 
     }}>
       <div style={{ background: '#222', width: 'fit-content', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 'bold', color: '#fff', marginBottom: '1.5rem' }}>
