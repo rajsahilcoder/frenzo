@@ -14,6 +14,12 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
+console.log("Firebase Config Check:", {
+    apiKeyExists: !!firebaseConfig.apiKey,
+    authDomainExists: !!firebaseConfig.authDomain,
+    projectIdExists: !!firebaseConfig.projectId
+});
+
 // Initialize Firebase
 // Check if firebase is already initialized to avoid hot-reload errors in development
 let app;
