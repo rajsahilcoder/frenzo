@@ -1,5 +1,5 @@
 import { db } from '../../lib/firebase';
-import { collection, addDoc, query, where, getDocs, getCountFromServer, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, getCountFromServer, Timestamp, doc, getDoc } from 'firebase/firestore';
 
 const COLLECTION_NAME = 'analytics_events';
 
@@ -149,23 +149,23 @@ export const analyticsService = {
   enrichWithUserData: async (visitors) => {
       // Collect all userIds
       const userIds = visitors.map(v => v.userId).filter(Boolean);
-      if (userIds.length === 0) return visitors;
+      const uniqueUserIds = [...new Set(userIds)]; // Javascript Set to array
+      
+      if (uniqueUserIds.length === 0) return visitors;
 
-      // In Firestore, we can't do "WHERE IN" for > 10 items easily, better to fetch individually or map if small scale
-      // For MVP, we'll fetch individual profiles (parallelized)
-      // Optimization: Create a 'users' map to avoid duplicate fetches
       const userMap = {};
 
-      await Promise.all(userIds.map(async (uid) => {
-          if (userMap[uid]) return;
+      // Fetch users in parallel
+      await Promise.all(uniqueUserIds.map(async (uid) => {
           try {
-             // We need to import getDoc/doc from firestore at top, assuming they are imported
-             const { doc, getDoc } = await import('firebase/firestore'); 
-             const userDoc = await getDoc(doc(db, "users", uid));
+             const userRef = doc(db, "users", uid);
+             const userDoc = await getDoc(userRef);
              if (userDoc.exists()) {
                  userMap[uid] = userDoc.data();
              }
-          } catch (e) { console.error("Error fetching user detail", e); }
+          } catch (e) { 
+              console.error(`Error fetching user profile for ${uid}:`, e); 
+          }
       }));
 
       return visitors.map(v => ({

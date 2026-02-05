@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { updateProfile } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore'; 
 import { db } from '../lib/firebase';
+import { isAdmin } from '../config/admins';
 import '../features/dashboard/styles/Dashboard.css';
 import AdminAnalyticsView from '../features/dashboard/components/AdminAnalyticsView'; // We will create this next
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: '', type: '' });
 
-  const isAdmin = currentUser?.email === 'contact@frenzo.services';
+  const isUserAdmin = isAdmin(currentUser?.email);
 
   useEffect(() => {
     if (currentUser) {
@@ -80,7 +81,7 @@ const Dashboard = () => {
   };
 
   // If Admin, show special view
-  if (isAdmin) {
+  if (isUserAdmin) {
       return (
         <div className="dashboard-container">
             <div className="dashboard-header">

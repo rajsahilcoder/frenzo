@@ -7,13 +7,33 @@ import {
   updateProfile,
   signInWithPhoneNumber
 } from 'firebase/auth';
-import { auth } from '../../../lib/firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore'; 
+import { auth, db } from '../../../lib/firebase';
 import { analyticsService } from '../../analytics/analyticsService';
 
 /**
  * Service to handle all Authentication interactions with Firebase.
  * This separates the "How" (Firebase) from the "What" (Login/Signup).
  */
+
+// Helper to ensure user exists in Firestore
+const syncUserToFirestore = async (user) => {
+    if (!user) return;
+    try {
+        const userRef = doc(db, "users", user.uid);
+        // Use setDoc with merge: true to avoid overwriting existing data
+        await setDoc(userRef, {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+            lastLogin: new Date()
+        }, { merge: true });
+    } catch (error) {
+        console.error("Error syncing user to Firestore:", error);
+    }
+};
+
 export const authService = {
   /**
    * Register a new user with email and password
@@ -32,6 +52,7 @@ export const authService = {
           });
       }
       analyticsService.logLogin('email', userCredential.user.uid);
+      await syncUserToFirestore(userCredential.user);
       return userCredential.user;
     } catch (error) {
       throw mapFirebaseError(error);
@@ -48,6 +69,7 @@ export const authService = {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       analyticsService.logLogin('email', userCredential.user.uid);
+      await syncUserToFirestore(userCredential.user);
       return userCredential.user;
     } catch (error) {
       throw mapFirebaseError(error);
@@ -63,6 +85,7 @@ export const authService = {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
       analyticsService.logLogin('google', userCredential.user.uid);
+      await syncUserToFirestore(userCredential.user);
       return userCredential.user;
     } catch (error) {
       throw mapFirebaseError(error);
@@ -94,6 +117,7 @@ export const authService = {
       try {
           const result = await confirmationResult.confirm(code);
           analyticsService.logLogin('phone', result.user.uid);
+          await syncUserToFirestore(result.user);
           return result.user;
       } catch (error) {
           throw mapFirebaseError(error);
