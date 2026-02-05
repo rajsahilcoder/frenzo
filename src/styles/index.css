@@ -152,6 +152,16 @@ h6 {
   display: none;
   z-index: 102; /* Above overlay */
   color: var(--text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 102;
 }
 
 /* Mobile Navbar Styles */

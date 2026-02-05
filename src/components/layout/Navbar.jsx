@@ -15,11 +15,6 @@ const Navbar = () => {
         Frenzo
       </Link>
       
-      {/* Mobile Toggle */}
-      <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle menu">
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
       {/* Nav Links - Desktop & Mobile */}
       <div className={`nav-links ${isOpen ? 'active' : ''}`}>
         <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
@@ -28,11 +23,16 @@ const Navbar = () => {
         <Link to="/pricing" className="nav-link" onClick={closeMenu}>Pricing</Link>
         <Link to="/how-it-works" className="nav-link" onClick={closeMenu}>Process</Link>
         <Link to="/vision" className="nav-link" onClick={closeMenu}>Vision</Link>
-        
-        {/* User Menu (Handles Login/Avatar) */}
-        <div onClick={(e) => e.stopPropagation()}>
-            <UserMenu />
-        </div>
+      </div>
+
+      <div className="nav-right">
+          {/* User Menu - Always Visible */}
+          <UserMenu />
+
+          {/* Mobile Toggle */}
+          <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle menu">
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
       </div>
     </nav>
   );
