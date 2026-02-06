@@ -77,7 +77,7 @@ const PublicProjects = () => {
                          <p style={{ color: '#444' }}>Check back soon or start your own project today.</p>
                      </div>
                  ) : (
-                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
                          {filteredProjects.map(project => (
                              <Card key={project.id} style={{ padding: '0', overflow: 'hidden', textAlign: 'left', transition: 'transform 0.3s' }} className="hover-lift">
                                   {/* Thumbnail Placeholder */}
@@ -87,12 +87,12 @@ const PublicProjects = () => {
                                       </span>
                                   </div>
                                   
-                                  <div style={{ padding: '1.5rem' }}>
+                                  <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', height: 'calc(100% - 200px)' }}>
                                       <div style={{ fontSize: '0.8rem', color: 'var(--accent-primary)', textTransform: 'uppercase', fontWeight: 'bold', marginBottom: '0.5rem' }}>
                                           {getProjectCategory(project.title)}
                                       </div>
                                       <h3 style={{ fontSize: '1.4rem', marginBottom: '0.8rem' }}>{project.title}</h3>
-                                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: '1.6', flex: 1 }}>
                                           {project.requirements ? project.requirements.substring(0, 100) + '...' : 'A custom growth solution designed for scale.'}
                                       </p>
                                       
@@ -105,7 +105,7 @@ const PublicProjects = () => {
 
                                       <Button 
                                         variant="outline" 
-                                        style={{ width: '100%', justifyContent: 'center' }}
+                                        style={{ width: '100%', justifyContent: 'center', marginTop: 'auto' }}
                                         onClick={() => navigate('/contact', { state: { details: `I saw the ${project.title} case study and want something similar.` } })}
                                       >
                                           View Case Study <ArrowRight size={16} style={{ marginLeft: '6px' }} />

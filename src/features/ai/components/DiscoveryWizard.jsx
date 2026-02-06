@@ -92,7 +92,7 @@ const DiscoveryWizard = () => {
   };
 
   return (
-    <div style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem' }}>
+    <div style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem 1rem' }}>
       
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>

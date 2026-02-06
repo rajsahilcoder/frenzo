@@ -102,9 +102,9 @@ const ProjectOverview = ({ project, role }) => {
          </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
          {/* Left Column: Requirements */}
-         <div style={{ background: '#111', padding: '1.5rem', borderRadius: '12px', border: '1px solid #222' }}>
+         <div style={{ flex: '1 1 600px', background: '#111', padding: '1.5rem', borderRadius: '12px', border: '1px solid #222' }}>
             <label style={{ display: 'block', color: '#888', fontSize: '0.9rem', marginBottom: '10px' }}>
               Project Requirements & Scope
             </label>
@@ -125,7 +125,7 @@ const ProjectOverview = ({ project, role }) => {
          </div>
 
          {/* Right Column: Meta & Notes */}
-         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+         <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             
             {/* Cost Card */}
             <div style={{ background: '#111', padding: '1.5rem', borderRadius: '12px', border: '1px solid #222' }}>

@@ -161,7 +161,7 @@ const ProjectDetails = () => {
 
       {/* Tabs */}
       <div style={{ borderBottom: '1px solid #222', background: '#0a0a0a', position: 'sticky', top: 0, zIndex: 10 }}>
-         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', gap: '2rem', padding: '0 2rem' }}>
+         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', gap: '2rem', padding: '0 2rem', overflowX: 'auto', whiteSpace: 'nowrap' }}>
             {[
               { id: 'overview', label: 'Overview', icon: <Layout size={18} /> },
               { id: 'tasks', label: 'Plan & Tasks', icon: <List size={18} /> },
