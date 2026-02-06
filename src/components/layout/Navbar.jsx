@@ -23,11 +23,12 @@ const Navbar = () => {
         <Link to="/pricing" className="nav-link" onClick={closeMenu}>Pricing</Link>
         <Link to="/how-it-works" className="nav-link" onClick={closeMenu}>Process</Link>
         <Link to="/vision" className="nav-link" onClick={closeMenu}>Vision</Link>
+        <Link to="/contact" state={{ details: 'I am interested in Booking a Free Scale Strategy Session.' }} className="btn-primary mobile-only" onClick={closeMenu} style={{ fontSize: '1.2rem', padding: '1rem 2rem', marginTop: '1rem' }}>Book Strategy</Link>
       </div>
 
       <div className="nav-right">
           {/* CTA - Visible on Mobile too */}
-          <Link to="/contact" state={{ details: 'I am interested in Booking a Free Scale Strategy Session.' }} className="btn-primary" style={{ marginRight: '0.5rem', fontSize: '0.8rem', padding: '0.5rem 1rem' }}>Book Strategy</Link>
+          <Link to="/contact" state={{ details: 'I am interested in Booking a Free Scale Strategy Session.' }} className="btn-primary desktop-only" style={{ marginRight: '0.5rem', fontSize: '0.8rem', padding: '0.5rem 1rem' }}>Book Strategy</Link>
 
           {/* User Menu - Always Visible */}
           <UserMenu />
