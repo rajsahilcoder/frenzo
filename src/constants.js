@@ -6,9 +6,11 @@
 export const PRICING_RATES = {
   // Base Project Types
   type: {
+    starter: 2000,        // Static Portfolio
     standard: 15000, 
     ecommerce: 30000,
     saas: 50000
+    // Removed old unused ones for clarity if needed, or keep them if they are used elsewhere
   },
   
   // AI Integration Levels
@@ -38,10 +40,32 @@ export const PRICING_RATES = {
   pageRate: 2000
 };
 
+// TOOLTIP TEXTS
+export const TOOLTIPS = {
+  projectType: {
+    starter: "Quick, professional one-page portfolio. Hosted on GitHub Pages. No backend.",
+    standard: "Interactive, scalable site using modern tech (React/Vue/etc). Best for businesses needing a future-proof presence.",
+    saas: "Complex logic, dashboards, and tools. Includes state management.",
+    platform: "Marketplaces, social networks, or multi-vendor stores. Heavy on user interactions.",
+    mobile: "Native iOS and Android apps (React Native). Published to App Stores.",
+    ecosystem: "Full suite: Web App + Mobile App + Admin Dashboard + Landing Page."
+  },
+  design: {
+    template: "Clean, professional UI using standard components.",
+    custom: "Unique branding, custom layouts, and tailored visual identity.",
+    motion: "High-end animations, scroll effects, and immersive interactions."
+  },
+  intelligence: {
+    chatbot: "Automated Q&A bot trained on your data.",
+    agent: "Autonomous agent that can perform tasks (booking, emailing, searching)."
+  }
+};
+
 // CONTACT FORM MESSAGES
 export const CONTACT_MESSAGES = {
   BOOK_STRATEGY: 'I am interested in Booking a Free Scale Strategy Session.',
-  AUDIT_RESULT: (score, title) => `I completed the Tech Audit and scored ${score}/55 (${title}). I need help fixing my scalability gaps.`
+  AUDIT_RESULT: (score, title) => `I completed the Tech Audit and scored ${score}/55 (${title}). I need help fixing my scalability gaps.`,
+  LAUNCH_OFFER: 'I want to claim the Launch Offer.'
 };
 
 // AUDIT CONFIGURATION

@@ -3,7 +3,7 @@ import { ArrowRight, FileText, Monitor, Globe, Smartphone, Layers, Check } from 
 import { Link } from 'react-router-dom';
 import Tooltip from '../../../components/ui/Tooltip';
 import { usePricing } from '../hooks/usePricing';
-import { ADDONS, DESIGN_OPTIONS, INTELLIGENCE_OPTIONS } from '../../../constants';
+import { ADDONS, DESIGN_OPTIONS, INTELLIGENCE_OPTIONS, TOOLTIPS, PRICING_RATES } from '../../../constants';
 import { Info } from 'lucide-react';
 
 const getTypeStyle = (id, current) => ({
@@ -34,13 +34,13 @@ const PricingCalculator = () => {
             <button onClick={() => setProjectType('standard')} style={getTypeStyle('standard', projectType)}>
                <div style={{display:'flex', alignItems:'center'}}>
                   <FileText size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Dynamic Web</span>
-                  <Tooltip text="Interactive, scalable site using modern tech (React/Vue/etc). Best for businesses needing a future-proof presence." />
+                  <Tooltip text={TOOLTIPS.projectType.standard} />
                </div>
             </button>
             <button onClick={() => setProjectType('saas')} style={getTypeStyle('saas', projectType)}>
                <div style={{display:'flex', alignItems:'center'}}>
                   <Monitor size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Software / SaaS</span>
-                  <Tooltip text="Complex logic, dashboards, and tools. Includes state management." />
+                  <Tooltip text={TOOLTIPS.projectType.saas} />
                </div>
             </button>
          </div>
@@ -48,19 +48,19 @@ const PricingCalculator = () => {
              <button onClick={() => setProjectType('platform')} style={getTypeStyle('platform', projectType)}>
                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                  <Globe size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Platform</span>
-                 <Tooltip text="Marketplaces, social networks, or multi-vendor stores. Heavy on user interactions." />
+                 <Tooltip text={TOOLTIPS.projectType.platform} />
                </div>
             </button>
             <button onClick={() => setProjectType('mobile')} style={getTypeStyle('mobile', projectType)}>
                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                  <Smartphone size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Mobile App</span>
-                 <Tooltip text="Native iOS and Android apps (React Native). Published to App Stores." />
+                 <Tooltip text={TOOLTIPS.projectType.mobile} />
                </div>
             </button>
             <button onClick={() => setProjectType('ecosystem')} style={getTypeStyle('ecosystem', projectType)}>
                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                  <Layers size={18} /> <span style={{fontSize:'0.9rem', marginLeft:'6px'}}>Ecosystem</span>
-                 <Tooltip text="Full suite: Web App + Mobile App + Admin Dashboard + Landing Page." />
+                 <Tooltip text={TOOLTIPS.projectType.ecosystem} />
                </div>
             </button>
          </div>
@@ -69,7 +69,7 @@ const PricingCalculator = () => {
            <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(37,99,235,0.1)', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--accent-primary)', display: 'flex', gap: '10px' }}>
               <Info size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
               <span>
-                <strong>Why ₹3,000 vs ₹2,000?</strong> <br/>
+                <strong>Why ₹{PRICING_RATES.type.standard.toLocaleString()} vs ₹{PRICING_RATES.type.starter.toLocaleString()}?</strong> <br/>
                 The standard foundation uses modern tech (React/Vue/etc) making it scalable. Starter is purely static HTML.
               </span>
            </div>
@@ -112,9 +112,9 @@ const PricingCalculator = () => {
                 }}
               >
                 {d}
-                {d === 'template' && <Tooltip text="Clean, professional UI using standard components." />}
-                {d === 'custom' && <Tooltip text="Unique branding, custom layouts, and tailored visual identity." />}
-                {d === 'motion' && <Tooltip text="High-end animations, scroll effects, and immersive interactions." />}
+                {d === 'template' && <Tooltip text={TOOLTIPS.design.template} />}
+                {d === 'custom' && <Tooltip text={TOOLTIPS.design.custom} />}
+                {d === 'motion' && <Tooltip text={TOOLTIPS.design.motion} />}
               </button>
             ))}
          </div>
@@ -138,8 +138,8 @@ const PricingCalculator = () => {
                 }}
               >
                 {ai === 'none' ? 'None' : ai === 'chatbot' ? 'Smart Chatbot' : 'AI Agent'}
-                {ai === 'chatbot' && <Tooltip text="Automated Q&A bot trained on your data." />}
-                {ai === 'agent' && <Tooltip text="Autonomous agent that can perform tasks (booking, emailing, searching)." />}
+                {ai === 'chatbot' && <Tooltip text={TOOLTIPS.intelligence.chatbot} />}
+                {ai === 'agent' && <Tooltip text={TOOLTIPS.intelligence.agent} />}
               </button>
             ))}
          </div>
