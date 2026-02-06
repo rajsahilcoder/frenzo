@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Tooltip from '../../../components/ui/Tooltip';
 import { usePricing } from '../hooks/usePricing';
 import { ADDONS, DESIGN_OPTIONS, INTELLIGENCE_OPTIONS, TOOLTIPS, PRICING_RATES } from '../../../constants';
+import { calculateDiscountedPrice } from '../../../lib/utils';
 import { Info } from 'lucide-react';
 
 const getTypeStyle = (id, current) => ({
@@ -180,7 +181,7 @@ const PricingCalculator = () => {
             <span style={{ color: '#888' }}>Estimated Investment</span>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '1.2rem', color: '#666', textDecoration: 'line-through', fontWeight: 'bold' }}>
-                {formatPrice(total * PRICING_RATES.DISCOUNT_MULTIPLIER)}
+                ₹{calculateDiscountedPrice(total)}
               </div>
               <span style={{ fontSize: '2.5rem', fontWeight: 'bold', lineHeight: 1, color: 'var(--accent-primary)' }}>
                 {formatPrice(total)}

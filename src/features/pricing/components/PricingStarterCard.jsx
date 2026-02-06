@@ -2,6 +2,7 @@ import React from 'react';
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { PRICING_RATES, CONTACT_MESSAGES } from '../../../constants';
+import { calculateDiscountedPrice } from '../../../lib/utils';
 
 const PricingStarterCard = () => {
   return (
@@ -16,7 +17,7 @@ const PricingStarterCard = () => {
       <div style={{ marginBottom: '0.5rem', lineHeight: 1 }}>
         <span style={{ fontSize: '3.5rem', fontWeight: '800' }}>₹{PRICING_RATES.type.starter.toLocaleString()}</span>
         <span style={{ fontSize: '1.5rem', color: '#666', textDecoration: 'line-through', marginLeft: '12px' }}>
-           ₹{(PRICING_RATES.type.starter * PRICING_RATES.DISCOUNT_MULTIPLIER).toLocaleString()}
+           ₹{calculateDiscountedPrice(PRICING_RATES.type.starter)}
         </span>
       </div>
       <p style={{ color: '#666', marginBottom: '2rem' }}>One-time payment.</p>

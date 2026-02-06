@@ -4,43 +4,37 @@
 
 // PRICING CONFIGURATION
 export const PRICING_RATES = {
-  // Base Project Types
-  type: {
-    starter: 2000,        // Static Portfolio
-    standard: 15000, 
-    ecommerce: 30000,
-    saas: 50000
-    // Removed old unused ones for clarity if needed, or keep them if they are used elsewhere
+  type: { 
+    starter: 2499,        // Static Portfolio (Kept for compatibility)
+    standard: 3499,       // Dynamic Web (React Base)
+    saas: 39999,          // Functional Software
+    platform: 45999,      // Commerce/Marketplace
+    mobile: 59999,        // Native App
+    ecosystem: 79999      // Full Suite
   },
-  
-  // AI Integration Levels
   intelligence: {
-    none: 0,
-    basic: 10000,
-    advanced: 25000
+    none: 0, 
+    chatbot: 5000, 
+    agent: 15000 
   },
-  
-  // Design Complexity
-  design: {
-    template: 0,
-    custom: 15000
+  design: { 
+    template: 0, 
+    custom: 5000, 
+    motion: 10000 
   },
-  
-  // Feature Costs
+  pageRate: 1000, // Per additional page
   features: {
-    cms: 5000,
-    payments: 8000,
-    auth: 8000,
-    analytics: 5000,
-    seo: 5000,
-    chat: 8000
+    cms: 3000,
+    auth: 3000,
+    payments: 4000,
+    analytics: 2000,
+    seo: 2500,
+    copywriting: 1500,
+    logo: 2000
   },
-
-  // Per Page Rate (for standard sites)
-  pageRate: 2000,
   
   // Discount Logic
-  DISCOUNT_MULTIPLIER: 1.8
+  DISCOUNT_MULTIPLIER: 2.19
 };
 
 // TOOLTIP TEXTS
@@ -119,6 +113,8 @@ export const COMPANY_INFO = {
   address: 'India', 
   website: 'https://frenzo.services'
 };
+
+
 
 // ADMIN CONFIGURATION
 export const ADMIN_EMAILS = [
