@@ -94,50 +94,140 @@ export const analyticsService = {
     }
   },
 
-  // 4. Get All Unique Visitors (with metadata)
+  // 4. Get All Unique Visitors (User-Centric + Shared Device Handling)
   getAllVisitors: async () => {
       try {
         const q = query(collection(db, COLLECTION_NAME));
         const snapshot = await getDocs(q);
         
-        const visitorsMap = {}; // deviceId -> { firstSeen, lastSeen, userId, totalVisits }
+        const userMap = {};  // userId -> { ...stats, devices: Set }
+        const guestMap = {}; // deviceId -> { ...stats }
+        const deviceOwners = {}; // deviceId -> Set(userId)
 
         snapshot.forEach(doc => {
             const data = doc.data();
             const did = data.deviceId;
-            if (!did) return;
-
-            if (!visitorsMap[did]) {
-                visitorsMap[did] = {
-                    deviceId: did,
-                    firstSeen: data.timestamp,
-                    lastSeen: data.timestamp,
-                    userId: data.userId || null,
-                    visitCount: 0
-                };
+            
+            // 1. Track Device Ownership
+            if (data.userId && did) {
+                if (!deviceOwners[did]) deviceOwners[did] = new Set();
+                deviceOwners[did].add(data.userId);
             }
 
-            const v = visitorsMap[did];
-            v.visitCount++;
-            if (data.timestamp < v.firstSeen) v.firstSeen = data.timestamp;
-            if (data.timestamp > v.lastSeen)  v.lastSeen = data.timestamp;
-            if (data.userId && !v.userId) v.userId = data.userId; // Capture userId if found in any event
+            // 2. Bucket Data
+            if (data.userId) {
+                // Known User Traffic
+                if (!userMap[data.userId]) {
+                    userMap[data.userId] = {
+                        userId: data.userId,
+                        visitCount: 0,
+                        firstSeen: data.timestamp,
+                        lastSeen: data.timestamp,
+                        deviceIds: new Set()
+                    };
+                }
+                const u = userMap[data.userId];
+                u.visitCount++;
+                if (data.timestamp < u.firstSeen) u.firstSeen = data.timestamp;
+                if (data.timestamp > u.lastSeen)  u.lastSeen = data.timestamp;
+                if (did) u.deviceIds.add(did);
+
+            } else if (did) {
+                // Anonymous Guest Traffic
+                if (!guestMap[did]) {
+                    guestMap[did] = {
+                        deviceId: did,
+                        visitCount: 0,
+                        firstSeen: data.timestamp,
+                        lastSeen: data.timestamp,
+                        userId: null
+                    };
+                }
+                const g = guestMap[did];
+                g.visitCount++;
+                if (data.timestamp < g.firstSeen) g.firstSeen = data.timestamp;
+                if (data.timestamp > g.lastSeen)  g.lastSeen = data.timestamp;
+            }
         });
 
-        return Object.values(visitorsMap).sort((a, b) => b.lastSeen - a.lastSeen);
+        // 3. Merge "Exclusive" Guests into Users
+        // If a device belongs to EXACTLY one user, we assume the guest traffic was them before login.
+        // If it belongs to MULTIPLE users, we keep guest traffic separate (cannot attribute safely).
+        
+        const finalVisitors = [...Object.values(userMap)];
+        
+        Object.values(guestMap).forEach(guest => {
+            const owners = deviceOwners[guest.deviceId];
+            if (owners && owners.size === 1) {
+                // Merge this guest into the single owner
+                const ownerId = Array.from(owners)[0];
+                const user = userMap[ownerId];
+                if (user) {
+                    user.visitCount += guest.visitCount;
+                    if (guest.firstSeen < user.firstSeen) user.firstSeen = guest.firstSeen;
+                    if (guest.lastSeen > user.lastSeen) user.lastSeen = guest.lastSeen;
+                    // Device ID is already in user's set
+                    return; // Merged, don't push to final
+                }
+            }
+            // Else: Shared device OR purely anonymous -> Keep as Guest
+            finalVisitors.push(guest);
+        });
+
+        // Format for UI
+        return finalVisitors.map(v => ({
+            ...v,
+            // If it's a user, pick one device as 'primary' ID for table key, but allow drill-down
+            deviceId: v.userId ? Array.from(v.deviceIds)[0] : v.deviceId,
+            allDeviceIds: v.userId ? Array.from(v.deviceIds) : [v.deviceId]
+        })).sort((a, b) => b.lastSeen - a.lastSeen);
+
       } catch (error) {
           console.error("Error fetching visitors:", error);
           return [];
       }
   },
 
-  // 5. Get History for a Specific Visitor
-  getVisitorHistory: async (deviceId) => {
+  // 5. Get History for a Specific Visitor (supports multiple User Devices)
+  getVisitorHistory: async (identifier, targetUserId = null) => {
       try {
-          const q = query(collection(db, COLLECTION_NAME), where("deviceId", "==", deviceId));
+          // Identifier can be a single string (deviceId) or array of strings
+          const deviceIds = Array.isArray(identifier) ? identifier : [identifier];
+          
+          if (deviceIds.length === 0) return [];
+
+          // Firestore 'in' query supports up to 10 items.
+          const idsToQuery = deviceIds.slice(0, 10);
+
+          const q = query(
+              collection(db, COLLECTION_NAME), 
+              where("deviceId", "in", idsToQuery)
+          );
+
           const snapshot = await getDocs(q);
           const history = [];
-          snapshot.forEach(doc => history.push({ id: doc.id, ...doc.data() }));
+          
+          snapshot.forEach(doc => {
+              const data = doc.data();
+              
+              // Privacy/Integration Filter:
+              // 1. If viewing a User (targetUserId exists):
+              //    - Include their own events.
+              //    - Include Guest events (userId == null) *assuming* they might be merged.
+              //    - EXCLUDE events belonging to OTHER users.
+              if (targetUserId) {
+                  if (data.userId && data.userId !== targetUserId) return;
+              } 
+              // 2. If viewing a Guest (targetUserId is null):
+              //    - Include Guest events.
+              //    - EXCLUDE any User events (they belong to their own rows).
+              else {
+                  if (data.userId) return; 
+              }
+
+              history.push({ id: doc.id, ...data });
+          });
+          
           return history.sort((a, b) => b.timestamp - a.timestamp); // Newest first
       } catch (error) {
           console.error("Error fetching history:", error);

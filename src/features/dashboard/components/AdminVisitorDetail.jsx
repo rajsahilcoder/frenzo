@@ -7,9 +7,12 @@ const AdminVisitorDetail = ({ visitor, onBack }) => {
 
     useEffect(() => {
         const fetchHistory = async () => {
-            if (!visitor?.deviceId) return;
+             // Support merged view (allDeviceIds) or fallback to single deviceId
+            const identifier = visitor?.allDeviceIds || visitor?.deviceId;
+            if (!identifier) return;
+            
             try {
-                const data = await analyticsService.getVisitorHistory(visitor.deviceId);
+                const data = await analyticsService.getVisitorHistory(identifier, visitor.userId);
                 setHistory(data);
             } catch (error) {
                 console.error("Error loading history:", error);
@@ -37,8 +40,15 @@ const AdminVisitorDetail = ({ visitor, onBack }) => {
                 <h3>Visitor Profile</h3>
                 <div className="form-row">
                     <div>
-                        <small className="label">Device ID</small>
-                        <p style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>{visitor.deviceId}</p>
+                        <small className="label">Primary Device ID</small>
+                        <p style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                            {visitor.deviceId}
+                            {visitor.allDeviceIds?.length > 1 && (
+                                <span style={{ marginLeft: '0.5rem', fontSize: '0.8rem', color: 'var(--accent-primary)' }}>
+                                    (+{visitor.allDeviceIds.length - 1} linked)
+                                </span>
+                            )}
+                        </p>
                     </div>
                     {visitor.userData && (
                         <div>
