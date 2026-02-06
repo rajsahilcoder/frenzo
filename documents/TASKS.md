@@ -3,3 +3,4 @@
 3. merge projects constants into global constants
 4. Update the frenzo logo
 5. Update the kimi ai service to work as it's failing the api call.
+6. After i click on Approve & Schedule Strategy call, an option should open where i can select date and time to schedule the call and an automatic google meet link should be created and mail should be sent to admin and client with details of google meet.
