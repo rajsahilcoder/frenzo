@@ -17,6 +17,7 @@ const UserProfile = ({ targetUserId, readOnly = false }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [requirements, setRequirements] = useState('');
+    const [auditData, setAuditData] = useState(null);
     const [lastLogin, setLastLogin] = useState(null);
     const [createdAt, setCreatedAt] = useState(null);
     
@@ -61,6 +62,7 @@ const UserProfile = ({ targetUserId, readOnly = false }) => {
                 setPhoneNumber(data.phoneNumber || '');
                 setCompanyName(data.companyName || '');
                 setRequirements(data.requirements || '');
+                setAuditData(data.audit || null);
                 
                 // If it's the current user, we can fallbacks for auth data? 
                 // But generally DB should be single source of truth for "Profile Form"
@@ -250,11 +252,48 @@ const UserProfile = ({ targetUserId, readOnly = false }) => {
                         className="activity-input textarea"
                         value={requirements}
                         onChange={(e) => setRequirements(e.target.value)}
-                        placeholder={readOnly ? "No requirements listed." : "Tell us about your project..."}
+                        placeholder={readOnly ? "No requirements listed." : "Tell us about your audit results or project needs..."}
                         rows={5}
                         disabled={readOnly}
                     />
                 </div>
+
+                {/* Audit Results Section */}
+                {auditData && (
+                    <div style={{ marginTop: '2rem', marginBottom: '2rem', padding: '1.5rem', background: 'var(--bg-primary)', border: '1px solid var(--border-light)', borderRadius: '8px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <h4 style={{ margin: 0, fontSize: '1.1rem' }}>Tech Audit Report</h4>
+                            <span style={{ 
+                                background: auditData.score >= 40 ? '#22c55e20' : auditData.score >= 20 ? '#fbbf2420' : '#ef444420',
+                                color: auditData.score >= 40 ? '#22c55e' : auditData.score >= 20 ? '#fbbf24' : '#ef4444',
+                                padding: '0.25rem 0.75rem',
+                                borderRadius: '1rem',
+                                fontSize: '0.9rem',
+                                fontWeight: 'bold'
+                            }}>
+                                Score: {auditData.score}/{auditData.maxScore}
+                            </span>
+                        </div>
+                        <p style={{ fontWeight: 'bold', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Status: {auditData.status}</p>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontStyle: 'italic' }}>"{auditData.summary}"</p>
+                        
+                        {auditData.answers && (
+                            <div style={{ marginTop: '1rem', borderTop: '1px solid var(--border-light)', paddingTop: '1rem' }}>
+                                <small style={{ color: 'var(--text-tertiary)', display: 'block', marginBottom: '0.5rem' }}>DETAILS:</small>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                    {Object.entries(auditData.answers).map(([key, val]) => (
+                                        <li key={key} style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>
+                                            <span style={{ color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{key}:</span> <span style={{ color: 'var(--text-primary)' }}>{val}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        <div style={{ marginTop: '1rem', fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>
+                            Completed: {new Date(auditData.completedAt).toLocaleDateString()}
+                        </div>
+                    </div>
+                )}
 
                 {!readOnly && (
                     <button type="submit" className="log-btn" disabled={loading}>
