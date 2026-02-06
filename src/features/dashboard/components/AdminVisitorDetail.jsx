@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { analyticsService } from '../../analytics/analyticsService';
 
 const AdminVisitorDetail = ({ visitor, onBack }) => {
+    const navigate = useNavigate();
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,7 +39,21 @@ const AdminVisitorDetail = ({ visitor, onBack }) => {
             </button>
 
             <div className="card" style={{ marginBottom: '1.5rem' }}>
-                <h3>Visitor Profile</h3>
+                <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
+                    <h3>Visitor Profile</h3>
+                    {visitor.userId && (
+                        <button 
+                            onClick={() => navigate(`/profile/${visitor.userId}`)}
+                            style={{
+                                background: 'transparent', border:'1px solid var(--accent-primary)', 
+                                color:'var(--accent-primary)', padding:'0.3rem 0.8rem', borderRadius:'4px', cursor:'pointer', fontSize:'0.85rem'
+                            }}
+                        >
+                            View Full Profile &rarr;
+                        </button>
+                    )}
+                </div>
+                
                 <div className="form-row">
                     <div>
                         <small className="label">Primary Device ID</small>

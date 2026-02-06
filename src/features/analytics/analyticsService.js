@@ -208,6 +208,29 @@ export const analyticsService = {
       }
   },
 
+  // 5b. Get History specifically for a User ID
+  getUserHistory: async (userId) => {
+      try {
+          if (!userId) return [];
+          const q = query(
+              collection(db, COLLECTION_NAME), 
+              where("userId", "==", userId)
+          );
+          
+          const snapshot = await getDocs(q);
+          const history = [];
+          
+          snapshot.forEach(doc => {
+             history.push({ id: doc.id, ...doc.data() });
+          });
+          
+          return history.sort((a, b) => b.timestamp - a.timestamp);
+      } catch (error) {
+          console.error("Error fetching user history:", error);
+          return [];
+      }
+  },
+
   // 6. Enrichment
   enrichWithUserData: async (visitors) => {
       const userIds = visitors.map(v => v.userId).filter(Boolean);

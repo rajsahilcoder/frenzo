@@ -18,6 +18,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import UserProfilePage from './pages/UserProfilePage';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 
 import AnalyticsTracker from './components/layout/AnalyticsTracker';
@@ -65,6 +66,13 @@ function App() {
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            
+            {/* User Profile Route (Protected) */}
+            <Route path="/profile/:userId" element={
+              <ProtectedRoute>
+                <UserProfilePage />
               </ProtectedRoute>
             } />
           </Routes>

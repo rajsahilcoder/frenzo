@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { analyticsService } from '../../analytics/analyticsService';
 
 const AdminVisitorList = ({ onSelectVisitor }) => {
+    const navigate = useNavigate();
     const [visitors, setVisitors] = useState([]);
     const [loading, setLoading] = useState(true);
     
@@ -279,7 +281,16 @@ const AdminVisitorList = ({ onSelectVisitor }) => {
                     </thead>
                     <tbody>
                         {visitors.map((v) => (
-                            <tr key={v.deviceId} onClick={() => onSelectVisitor(v)} style={{ cursor: 'pointer' }}>
+                            <tr key={v.deviceId} 
+                                onClick={() => {
+                                    if (v.userId) {
+                                        navigate(`/profile/${v.userId}`);
+                                    } else {
+                                        onSelectVisitor(v); // Keep existing behavior for Guests (Detail View)
+                                    }
+                                }} 
+                                style={{ cursor: 'pointer' }}
+                            >
                                 <td>
                                     {v.userData ? (
                                         <div style={{display:'flex', flexDirection:'column'}}>
@@ -307,7 +318,11 @@ const AdminVisitorList = ({ onSelectVisitor }) => {
                                         }}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            onSelectVisitor(v);
+                                            if (v.userId) {
+                                                navigate(`/profile/${v.userId}`);
+                                            } else {
+                                                onSelectVisitor(v);
+                                            }
                                         }}
                                     >
                                         View
