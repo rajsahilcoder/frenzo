@@ -22,6 +22,7 @@ import UserProfilePage from './pages/UserProfilePage';
 import ProtectedRoute from './features/auth/components/ProtectedRoute';
 
 import AnalyticsTracker from './components/layout/AnalyticsTracker';
+import Audit from './pages/Audit';
 
 // Simple ScrollToTop component
 function App() {
@@ -59,6 +60,7 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/audit" element={<Audit />} />
             
             {/* Auth Routes */}
             <Route path="/login" element={<Login />} />
