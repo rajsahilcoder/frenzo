@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -17,22 +17,24 @@ const firebaseConfig = {
 console.log("Firebase Config Check:", {
     apiKeyExists: !!firebaseConfig.apiKey,
     authDomainExists: !!firebaseConfig.authDomain,
-    projectIdExists: !!firebaseConfig.projectId
+    projectIdExists: !!firebaseConfig.projectId,
+    storageBucketExists: !!firebaseConfig.storageBucket
 });
 
 // Initialize Firebase
-// Check if firebase is already initialized to avoid hot-reload errors in development
 let app;
 let auth;
 let db;
+let storage;
 
 try {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
+    storage = getStorage(app);
 } catch (error) {
     console.error("Firebase initialization error", error);
 }
 
-export { auth, db };
+export { auth, db, storage };
 export default app;
