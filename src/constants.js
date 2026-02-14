@@ -5,37 +5,70 @@
 // PRICING CONFIGURATION
 export const PRICING_RATES = {
   type: { 
-    starter: 2499,        // Static Portfolio (Kept for compatibility)
-    standard: 3499,       // Dynamic Web (React Base)
-    saas: 39999,          // Functional Software
-    platform: 45999,      // Commerce/Marketplace
-    mobile: 59999,        // Native App
-    ecosystem: 79999      // Full Suite
+    starter: 4499,        // Static Portfolio (Kept for compatibility)
+    standard: 4999,       // Dynamic Web (React Base)
+    saas: 129999,          // Functional Software
+    platform: 99999,      // Commerce/Marketplace
+    mobile: 129999,        // Native App
+    ecosystem: 169999      // Full Suite
   },
   intelligence: {
     none: 0, 
-    chatbot: 5000, 
-    agent: 15000 
+    chatbot: 15000, 
+    agent: 30000 
   },
   design: { 
     template: 0, 
-    custom: 5000, 
-    motion: 10000 
+    custom: 10000, 
+    motion: 20000 
   },
-  pageRate: 1000, // Per additional page
+  pageRate: 2000, // Per additional page
   features: {
-    cms: 3000,
-    auth: 3000,
-    payments: 4000,
-    analytics: 2000,
-    seo: 2500,
-    copywriting: 1500,
+    cms: 5000,
+    auth: 5000,
+    payments: 5000,
+    analytics: 10000,
+    seo: 10000,
+    copywriting: 15000,
     logo: 2000
   },
   
   // Discount Logic
-  DISCOUNT_MULTIPLIER: 2.19
+  DISCOUNT_MULTIPLIER: 1.89
 };
+// export const PRICING_RATES = {
+//   type: { 
+//     starter: 2499,        // Static Portfolio (Kept for compatibility)
+//     standard: 3499,       // Dynamic Web (React Base)
+//     saas: 39999,          // Functional Software
+//     platform: 45999,      // Commerce/Marketplace
+//     mobile: 59999,        // Native App
+//     ecosystem: 79999      // Full Suite
+//   },
+//   intelligence: {
+//     none: 0, 
+//     chatbot: 5000, 
+//     agent: 15000 
+//   },
+//   design: { 
+//     template: 0, 
+//     custom: 5000, 
+//     motion: 10000 
+//   },
+//   pageRate: 1000, // Per additional page
+//   features: {
+//     cms: 3000,
+//     auth: 3000,
+//     payments: 4000,
+//     analytics: 2000,
+//     seo: 2500,
+//     copywriting: 1500,
+//     logo: 2000
+//   },
+  
+//   // Discount Logic
+//   DISCOUNT_MULTIPLIER: 2.19
+// };
 
 // TOOLTIP TEXTS
 export const TOOLTIPS = {
@@ -119,5 +152,5 @@ export const COMPANY_INFO = {
 // ADMIN CONFIGURATION
 export const ADMIN_EMAILS = [
   'contact@frenzo.services',
-  // Add developer emails here
+  'rajsahilcoder@gmail.com'
 ];
